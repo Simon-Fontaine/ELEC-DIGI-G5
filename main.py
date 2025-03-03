@@ -1,7 +1,3 @@
-"""
-Supabase Python Example
-"""
-
 import os
 import asyncio
 from typing import Dict, Any, Optional
@@ -10,7 +6,6 @@ from supabase import create_async_client, AsyncClient
 
 
 async def initialize_supabase() -> Optional[AsyncClient]:
-    """Initialize Supabase client using environment variables."""
     url = os.environ.get("SUPABASE_URL")
     key = os.environ.get("SUPABASE_KEY")
     if not url or not key:
@@ -27,7 +22,6 @@ async def initialize_supabase() -> Optional[AsyncClient]:
 
 
 async def fetch_credentials(supabase: AsyncClient) -> None:
-    """Fetch all records from the credentials table."""
     try:
         response = await supabase.table("credentials").select("*").execute()
         records = response.data
@@ -38,7 +32,6 @@ async def fetch_credentials(supabase: AsyncClient) -> None:
 
 
 async def insert_credential(supabase: AsyncClient, email: str, password: str) -> None:
-    """Insert a new credential record."""
     try:
         response = (
             await supabase.table("credentials")
@@ -52,7 +45,6 @@ async def insert_credential(supabase: AsyncClient, email: str, password: str) ->
 
 
 def handle_record_updated(payload: Dict[str, Any]) -> None:
-    """Handle real-time updates from Supabase."""
     data = payload.get("data", {})
     event_type = data.get("type", "unknown")
 
@@ -66,7 +58,6 @@ def handle_record_updated(payload: Dict[str, Any]) -> None:
 
 
 async def setup_realtime_subscription(supabase: AsyncClient) -> Optional[Any]:
-    """Set up real-time subscription to the credentials table."""
     try:
         channel = (
             await supabase.channel("credentials_channel")
@@ -86,7 +77,6 @@ async def setup_realtime_subscription(supabase: AsyncClient) -> Optional[Any]:
 
 
 async def remove_realtime_subscription(supabase: AsyncClient, channel: Any) -> None:
-    """Remove the real-time subscription."""
     try:
         await supabase.remove_channel(channel)
         print("Real-time subscription removed")
@@ -95,7 +85,6 @@ async def remove_realtime_subscription(supabase: AsyncClient, channel: Any) -> N
 
 
 async def run_demo(demo_mode: bool = False) -> None:
-    """Run the demo program."""
     supabase = await initialize_supabase()
     if not supabase:
         return
